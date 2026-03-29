@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { Lead } from "@/lib/types"
 import { StatusBadge } from "@/components/status-badge"
-import { formatDistanceToNow } from "date-fns"
+import { format } from "date-fns"
 import { es } from "date-fns/locale"
 import { ChevronRight, Mail, Phone } from "lucide-react"
 
@@ -81,11 +81,8 @@ export function LeadsTable({ leads }: LeadsTableProps) {
                   <StatusBadge status={lead.status} type="lead" />
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <p className="text-sm text-muted-foreground" suppressHydrationWarning>
-                    {formatDistanceToNow(new Date(lead.created_at), {
-                      addSuffix: true,
-                      locale: es,
-                    })}
+                  <p className="text-sm text-muted-foreground">
+                    {format(new Date(lead.created_at), "d MMM yyyy", { locale: es })}
                   </p>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right">
@@ -123,11 +120,8 @@ export function LeadsTable({ leads }: LeadsTableProps) {
                   <p className="text-sm text-muted-foreground mb-1">{lead.company}</p>
                 )}
                 <p className="text-sm text-muted-foreground truncate">{lead.email}</p>
-                <p className="text-xs text-muted-foreground mt-2" suppressHydrationWarning>
-                  {formatDistanceToNow(new Date(lead.created_at), {
-                    addSuffix: true,
-                    locale: es,
-                  })}
+                <p className="text-xs text-muted-foreground mt-2">
+                  {format(new Date(lead.created_at), "d MMM yyyy", { locale: es })}
                 </p>
               </div>
               <ChevronRight className="h-5 w-5 text-muted-foreground flex-shrink-0" />

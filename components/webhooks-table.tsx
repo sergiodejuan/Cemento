@@ -83,22 +83,26 @@ export function WebhooksTable({ webhooks }: WebhooksTableProps) {
                 <span className="font-medium text-foreground">{webhook.name}</span>
               </td>
               <td className="px-6 py-4">
-                <div className="flex items-center gap-2">
-                  <code className="text-xs bg-muted px-2 py-1 rounded text-muted-foreground truncate max-w-[200px]">
-                    /api/webhooks/{webhook.token.slice(0, 8)}...
-                  </code>
-                  <button
-                    onClick={() => copyToClipboard(webhook.token, webhook.id)}
-                    className="p-1 text-muted-foreground hover:text-foreground transition-colors"
-                    title="Copiar URL completa"
-                  >
-                    {copiedId === webhook.id ? (
-                      <Check className="h-4 w-4 text-green-600" />
-                    ) : (
-                      <Copy className="h-4 w-4" />
-                    )}
-                  </button>
-                </div>
+                {webhook.token ? (
+                  <div className="flex items-center gap-2">
+                    <code className="text-xs bg-muted px-2 py-1 rounded text-muted-foreground truncate max-w-[200px]">
+                      /api/webhooks/{webhook.token.slice(0, 8)}...
+                    </code>
+                    <button
+                      onClick={() => copyToClipboard(webhook.token, webhook.id)}
+                      className="p-1 text-muted-foreground hover:text-foreground transition-colors"
+                      title="Copiar URL completa"
+                    >
+                      {copiedId === webhook.id ? (
+                        <Check className="h-4 w-4 text-green-600" />
+                      ) : (
+                        <Copy className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
+                ) : (
+                  <span className="text-xs text-muted-foreground">Sin token</span>
+                )}
               </td>
               <td className="px-6 py-4">
                 <span className="text-sm text-muted-foreground">
@@ -122,7 +126,7 @@ export function WebhooksTable({ webhooks }: WebhooksTableProps) {
               <td className="px-6 py-4">
                 <div className="flex items-center justify-end gap-2">
                   <Link
-                    href={`/integrations/${webhook.id}`}
+                    href={`/settings/integrations/${webhook.id}`}
                     className="p-1.5 text-muted-foreground hover:text-foreground transition-colors"
                     title="Ver logs"
                   >

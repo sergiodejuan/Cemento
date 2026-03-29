@@ -3,19 +3,29 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { LayoutDashboard, Users, Megaphone, Menu, X, Webhook } from "lucide-react"
-import { useState } from "react"
+import { LayoutDashboard, Users, Megaphone, Menu, X, Settings } from "lucide-react"
+import { useState, useEffect } from "react"
+import { createClient } from "@/lib/supabase/client"
+import type { User } from "@supabase/supabase-js"
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
   { name: "Leads", href: "/leads", icon: Users },
   { name: "Campañas", href: "/campaigns", icon: Megaphone },
-  { name: "Integraciones", href: "/integrations", icon: Webhook },
+  { name: "Ajustes", href: "/settings", icon: Settings },
 ]
 
 export function Sidebar() {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [user, setUser] = useState<User | null>(null)
+  const supabase = createClient()
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data.user)
+    })
+  }, [supabase.auth])
 
   return (
     <>
@@ -86,11 +96,29 @@ export function Sidebar() {
             </ul>
           </nav>
 
-          {/* Footer */}
+          {/* Footer - User info */}
           <div className="p-4 border-t border-border">
-            <p className="text-xs text-muted-foreground text-center">
-              Meta Ads CRM v1.0
-            </p>
+            {user ? (
+              <div className="flex items-center gap-3">
+                <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center">
+                  <span className="text-xs font-medium text-foreground">
+                    {user.email?.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-foreground truncate">
+                    {user.user_metadata?.full_name || "Usuario"}
+                  </p>
+                  <p className="text-xs text-muted-foreground truncate">
+                    {user.email}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <p className="text-xs text-muted-foreground text-center">
+                Meta Ads CRM v1.0
+              </p>
+            )}
           </div>
         </div>
       </aside>
