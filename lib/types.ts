@@ -64,3 +64,25 @@ export const CAMPAIGN_STATUS_CONFIG: Record<CampaignStatus, { label: string; col
   completed: { label: 'Completada', color: 'bg-gray-100 text-gray-800' },
   draft: { label: 'Borrador', color: 'bg-blue-100 text-blue-800' },
 }
+
+export interface Webhook {
+  id: string
+  name: string
+  token: string
+  is_active: boolean
+  default_campaign_id: string | null
+  default_source: string
+  created_at: string
+  updated_at: string
+  campaign?: Campaign
+}
+
+export interface WebhookLog {
+  id: string
+  webhook_id: string
+  payload: Record<string, unknown>
+  status: 'success' | 'error'
+  error_message: string | null
+  lead_id: string | null
+  created_at: string
+}

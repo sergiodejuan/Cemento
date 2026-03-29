@@ -81,7 +81,7 @@ export function LeadsTable({ leads }: LeadsTableProps) {
                   <StatusBadge status={lead.status} type="lead" />
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-muted-foreground" suppressHydrationWarning>
                     {formatDistanceToNow(new Date(lead.created_at), {
                       addSuffix: true,
                       locale: es,
@@ -123,7 +123,7 @@ export function LeadsTable({ leads }: LeadsTableProps) {
                   <p className="text-sm text-muted-foreground mb-1">{lead.company}</p>
                 )}
                 <p className="text-sm text-muted-foreground truncate">{lead.email}</p>
-                <p className="text-xs text-muted-foreground mt-2">
+                <p className="text-xs text-muted-foreground mt-2" suppressHydrationWarning>
                   {formatDistanceToNow(new Date(lead.created_at), {
                     addSuffix: true,
                     locale: es,

@@ -3,13 +3,14 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { LayoutDashboard, Users, Megaphone, Menu, X } from "lucide-react"
+import { LayoutDashboard, Users, Megaphone, Menu, X, Webhook } from "lucide-react"
 import { useState } from "react"
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
   { name: "Leads", href: "/leads", icon: Users },
   { name: "Campañas", href: "/campaigns", icon: Megaphone },
+  { name: "Integraciones", href: "/integrations", icon: Webhook },
 ]
 
 export function Sidebar() {

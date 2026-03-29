@@ -40,3 +40,58 @@ export async function updateLeadStatus(
 
   return { success: true }
 }
+
+export async function createWebhook(data: {
+  name: string
+  default_campaign_id: string | null
+  default_source: string
+}) {
+  const supabase = await createClient()
+
+  // Generate unique token
+  const token = crypto.randomUUID().replace(/-/g, "")
+
+  const { error } = await supabase.from("webhooks").insert({
+    name: data.name,
+    token,
+    default_campaign_id: data.default_campaign_id,
+    default_source: data.default_source,
+    is_active: true,
+  })
+
+  if (error) {
+    throw new Error("Error al crear el webhook")
+  }
+
+  revalidatePath("/integrations")
+  return { success: true }
+}
+
+export async function toggleWebhookStatus(id: string, isActive: boolean) {
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from("webhooks")
+    .update({ is_active: isActive, updated_at: new Date().toISOString() })
+    .eq("id", id)
+
+  if (error) {
+    throw new Error("Error al actualizar el webhook")
+  }
+
+  revalidatePath("/integrations")
+  return { success: true }
+}
+
+export async function deleteWebhook(id: string) {
+  const supabase = await createClient()
+
+  const { error } = await supabase.from("webhooks").delete().eq("id", id)
+
+  if (error) {
+    throw new Error("Error al eliminar el webhook")
+  }
+
+  revalidatePath("/integrations")
+  return { success: true }
+}
